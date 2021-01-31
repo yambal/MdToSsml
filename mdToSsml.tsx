@@ -1,7 +1,17 @@
 import marked, { Renderer, Slugger } from 'marked'
 
 export const titleAndBodyAnfFooterToSsml = (title: string, bodyMd: string, footer: string) => {
-  const headerSsml = `<emphasis level="strong">${title}</emphasis>`
+  const headerSsml = `
+  <par>
+    <media xml:id='question' begin="7s">
+      <emphasis level="strong">${title}</emphasis>
+    </media>
+    <media repeatDur='60s' end='question.end+7s' fadeOutDur="3s">
+      <audio src="https://yambal.github.io/MdToSsml/bgm_01.mp3">
+      </audio>
+    </media>
+  </par>
+  <break time="3s"/>`
   const bodySsml = render(bodyMd)
   const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
