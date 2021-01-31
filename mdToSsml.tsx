@@ -1,4 +1,5 @@
 import marked, { Renderer, Slugger } from 'marked'
+var TurndownService = require('turndown')
 
 export const titleAndBodyAnfFooterToSsml = (title: string, bodyMd: string, footer: string) => {
   const headerSsml = `
@@ -12,19 +13,37 @@ export const titleAndBodyAnfFooterToSsml = (title: string, bodyMd: string, foote
     </media>
   </par>
   <break time="3s"/>`
-  const bodySsml = render(bodyMd)
+  const bodySsml = mdToSsml(bodyMd)
   const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
 }
 
 export const mdToSsml = (md: string) => {
-  const ssml = render(md);
+  let ssml: string = ''
+  if(isHtml(md)) {
+    ssml = render(htmlToMd(md))
+  } else {
+    ssml = render(md);
+  }
   return ssml
 }
 
 const render = (md: string) => {
   marked.use({ renderer })
   return marked(md)
+}
+
+const stripTags = (str: string) => {
+  return str.replace(/(<([^>]+)>)/gi, "")
+}
+
+const isHtml = (str: string) => {
+  return stripTags(str).length !== str.length
+}
+
+const htmlToMd = (html: string): string => {
+  const turndownService = new TurndownService()
+  return turndownService.turndown(html)
 }
 
 /**
