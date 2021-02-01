@@ -1,7 +1,8 @@
 import marked, { Renderer, Slugger } from 'marked'
-var TurndownService = require('turndown')
+import { isHtml, htmlToMd } from './mdUtilities'
 
 export const titleAndBodyAnfFooterToSsml = (title: string, bodyMd: string, footer: string) => {
+  console.log('titleAndBodyAnfFooterToSsml')
   const headerSsml = `
   <par>
     <media xml:id='question' begin="7s">
@@ -18,6 +19,10 @@ export const titleAndBodyAnfFooterToSsml = (title: string, bodyMd: string, foote
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
 }
 
+/**
+ * MDをSSMLに変換する
+ * HTMLの場合も自動的に判定しSSMLに変換する
+ **/
 export const mdToSsml = (md: string) => {
   let ssml: string = ''
   if(isHtml(md)) {
@@ -28,22 +33,12 @@ export const mdToSsml = (md: string) => {
   return ssml
 }
 
+/**
+ * MDをSSMLに変換するRenderer
+ **/
 const render = (md: string) => {
   marked.use({ renderer })
   return marked(md)
-}
-
-const stripTags = (str: string) => {
-  return str.replace(/(<([^>]+)>)/gi, "")
-}
-
-const isHtml = (str: string) => {
-  return stripTags(str).length !== str.length
-}
-
-const htmlToMd = (html: string): string => {
-  const turndownService = new TurndownService()
-  return turndownService.turndown(html)
 }
 
 /**
@@ -51,8 +46,6 @@ const htmlToMd = (html: string): string => {
  * See : https://marked.js.org/using_pro#renderer
  * Ssml : https://cloud.google.com/text-to-speech/docs/ssml?hl=ja
  */
-
-
 const renderer: Renderer = {
   options: {},
   // Block - - - - - - - - - - - - - - - - - - - -
@@ -124,3 +117,6 @@ const renderer: Renderer = {
     return `<say-as interpret-as="verbatim">${code}</say-as>`
   },
 }
+
+
+
