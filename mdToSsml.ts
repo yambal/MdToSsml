@@ -1,19 +1,19 @@
 import marked, { Renderer, Slugger } from 'marked'
 import { isHtml, htmlToMd } from './mdUtilities'
+import { addBgm } from './ssmlHelper'
 
 export const titleAndBodyAnfFooterToSsml = (title: string, bodyMd: string, footer: string) => {
   console.log('titleAndBodyAnfFooterToSsml')
-  const headerSsml = `
-  <par>
-    <media xml:id='question' begin="7s">
-      <emphasis level="strong">${title}</emphasis>
-    </media>
-    <media repeatDur='60s' end='question.end+7s' fadeOutDur="3s">
-      <audio src="https://yambal.github.io/MdToSsml/bgm_01.mp3">
-      </audio>
-    </media>
-  </par>
-  <break time="3s"/>`
+  const headerSsml = addBgm({
+    content: title,
+    audio: {
+      url: 'https://yambal.github.io/MdToSsml/bgm_01.mp3',
+      introSec: 7,
+      afterglowSec: 7,
+      fadeoutSec: 3,
+      soundLevel: -10
+    }
+  }) + '<break time="3s"/>'
   const bodySsml = mdToSsml(bodyMd)
   const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
