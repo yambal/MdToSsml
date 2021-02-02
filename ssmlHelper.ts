@@ -16,12 +16,11 @@ export const addBgm = (props: AddBgmProps) => {
   const id = nanoid(3)
   return `
   <par>
-    <media xml:id="${id}" begin="${introSec}s">
+    <media xml:id="bgm${id}" begin="${introSec}s">
       ${props.content}
     </media>
-    <media end='${id}.end+${afterglowSec}s' fadeOutDur="${fadeoutSec}s" soundLevel="${soundLevel >= 0 ? `+${soundLevel}` : soundLevel}dB">
-      <audio src="${props.audio.url}">
-      </audio>
+    <media end="bgm${id}.end+${afterglowSec}s" fadeOutDur="${fadeoutSec}s" soundLevel="${soundLevel >= 0 ? `+${soundLevel}` : soundLevel}dB">
+      <audio src="${props.audio.url}" />
     </media>
   </par>`
 }

@@ -2,7 +2,7 @@ import marked, { Renderer, Slugger } from 'marked'
 import { isHtml, htmlToMd } from './mdUtilities'
 import { addBgm } from './ssmlHelper'
 
-export const titleAndBodyAnfFooterToSsml = (title: string, bodyMd: string, footer: string) => {
+export const mdToRitchSsml = (title: string, bodyMd: string, footer: string) => {
   console.log('titleAndBodyAnfFooterToSsml')
   const headerSsml = addBgm({
     content: title,
