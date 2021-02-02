@@ -1,19 +1,19 @@
 import marked, { Renderer, Slugger } from 'marked'
 import { isHtml, htmlToMd } from './mdUtilities'
-import { addBgm } from './ssmlHelper'
+import { podCastOpeningSsml } from './ssmlHelper'
 
 export const mdToRitchSsml = (title: string, bodyMd: string, footer: string) => {
-  console.log('titleAndBodyAnfFooterToSsml')
-  const headerSsml = addBgm({
-    content: title,
-    audio: {
-      url: 'https://yambal.github.io/MdToSsml/bgm_01.mp3',
-      introSec: 7,
-      afterglowSec: 7,
-      fadeoutSec: 3,
-      soundLevel: -10
-    }
-  }) + '<break time="3s"/>'
+  console.log('mdToRitchSsml')
+
+  const headerSsml = podCastOpeningSsml({
+    channel: {
+      title: 'チャンネルタイトル',
+      description: 'チャンネル要約'
+    },
+    title,
+    description: '要約',
+    publishDate: new Date()
+  })
   const bodySsml = mdToSsml(bodyMd)
   const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
