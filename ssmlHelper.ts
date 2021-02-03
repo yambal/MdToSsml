@@ -10,15 +10,13 @@ export type PodCastOpeningSsmlProps = {
     description: string
   }
   title: string
-  description: string
+  descMd: string
   publishDate: Date
 }
 
-export const mdToRitchSsml = (content: PodCastOpeningSsmlProps, footer: string) => {
-  console.log('mdToRitchSsml')
-
+export const podCastSsml = (content: PodCastOpeningSsmlProps, footer: string) => {
   const headerSsml = podCastOpeningSsml(content)
-  const bodySsml = mdToSsml(content.description)
+  const bodySsml = mdToSsml(content.descMd)
   const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
 }
@@ -28,12 +26,11 @@ export const mdToRitchSsml = (content: PodCastOpeningSsmlProps, footer: string) 
  * @param props 
  */
 export const podCastOpeningSsml = (props: PodCastOpeningSsmlProps) => {
-  const headerInnerSSML = `<speak>
+  const headerInnerSSML = `
     ${props.channel ? `<emphasis level="strong">${props.channel.title}</emphasis><break time="1s" />` : null}
     ${props.channel ? `${props.channel.description}<break time="3s" />` : null}
     ${dateFormatForRead(props.publishDate)}<break time="0.5s" />
-    <emphasis level="strong">${props.title}</emphasis>
-  </speak>`
+    <emphasis level="strong">${props.title}</emphasis>`
 
   return addBgm({
     content: headerInnerSSML,
@@ -50,15 +47,16 @@ export const podCastOpeningSsml = (props: PodCastOpeningSsmlProps) => {
 /**
  * BGM
  **/
+type Audio = {
+  url: string
+  introSec?: number
+  afterglowSec?: number
+  fadeoutSec?: number
+  soundLevel?: number
+}
 type AddBgmProps = {
   content: string
-  audio: {
-    url: string
-    introSec?: number
-    afterglowSec?: number
-    fadeoutSec?: number
-    soundLevel?: number
-  }
+  audio: Audio
 }
 
 export const addBgm = (props: AddBgmProps) => {
@@ -67,7 +65,7 @@ export const addBgm = (props: AddBgmProps) => {
   return `
   <par>
     <media xml:id="bgm_${id}" begin="${introSec}s">
-      ${props.content}
+      <speak>${props.content}</speak>
     </media>
     <media end="bgm_${id}.end+${afterglowSec}s" fadeOutDur="${fadeoutSec}s" soundLevel="${soundLevel >= 0 ? `+${soundLevel}` : soundLevel}dB">
       <audio src="${props.audio.url}" />
