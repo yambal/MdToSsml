@@ -1,5 +1,6 @@
 import { customAlphabet } from 'nanoid'
 import { dateFormatForRead } from './mdUtilities'
+import { mdToSsml } from './mdToSsml'
 
 const mediaId = customAlphabet('abcdefghijklmnopqrstuvwxyzABCSEFGHIJKLMNOPQRSTUVWXYZ0123456789', 3) // Media のIDにハイフンは使えない
 
@@ -13,17 +14,25 @@ export type PodCastOpeningSsmlProps = {
   publishDate: Date
 }
 
+export const mdToRitchSsml = (content: PodCastOpeningSsmlProps, footer: string) => {
+  console.log('mdToRitchSsml')
+
+  const headerSsml = podCastOpeningSsml(content)
+  const bodySsml = mdToSsml(content.description)
+  const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
+  return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
+}
+
 /**
  * PodCastを想定したオープニングSSMLを生成する
  * @param props 
  */
 export const podCastOpeningSsml = (props: PodCastOpeningSsmlProps) => {
   const headerInnerSSML = `<speak>
-    ${props.channel?.title ? `<emphasis level="strong">${props.channel.title}</emphasis><break time="1s" />` : null}
-    ${props.channel?.description ? `${props.channel.description}<break time="3s" />` : null}
+    ${props.channel ? `<emphasis level="strong">${props.channel.title}</emphasis><break time="1s" />` : null}
+    ${props.channel ? `${props.channel.description}<break time="3s" />` : null}
     ${dateFormatForRead(props.publishDate)}<break time="0.5s" />
-    <emphasis level="strong">${props.title}</emphasis><break time="1.5s" />
-    ${props.description}
+    <emphasis level="strong">${props.title}</emphasis>
   </speak>`
 
   return addBgm({

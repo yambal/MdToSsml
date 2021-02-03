@@ -1,23 +1,5 @@
 import marked, { Renderer, Slugger } from 'marked'
 import { isHtml, htmlToMd } from './mdUtilities'
-import { podCastOpeningSsml } from './ssmlHelper'
-
-export const mdToRitchSsml = (title: string, bodyMd: string, footer: string) => {
-  console.log('mdToRitchSsml')
-
-  const headerSsml = podCastOpeningSsml({
-    channel: {
-      title: 'チャンネルタイトル',
-      description: 'チャンネル要約'
-    },
-    title,
-    description: '要約',
-    publishDate: new Date()
-  })
-  const bodySsml = mdToSsml(bodyMd)
-  const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
-  return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
-}
 
 /**
  * MDをSSMLに変換する

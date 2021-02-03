@@ -1,5 +1,3 @@
-import { time } from "console"
-
 var TurndownService = require('turndown')
 
 /**
