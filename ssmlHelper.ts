@@ -4,19 +4,19 @@ import { mdToSsml } from './mdToSsml'
 
 const mediaId = customAlphabet('abcdefghijklmnopqrstuvwxyzABCSEFGHIJKLMNOPQRSTUVWXYZ0123456789', 3) // Media のIDにハイフンは使えない
 
-export type PodCastOpeningSsmlProps = {
+export type PodCastContent = {
   channel?: {
     title: string,
     description: string
   }
   title: string
-  descMd: string
+  descMdOrHtmlOrText: string
   publishDate: Date
 }
 
-export const podCastSsml = (content: PodCastOpeningSsmlProps, footer: string) => {
+export const podCastSsml = (content: PodCastContent, footer: string) => {
   const headerSsml = podCastOpeningSsml(content)
-  const bodySsml = mdToSsml(content.descMd)
+  const bodySsml = mdToSsml(content.descMdOrHtmlOrText)
   const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
 }
@@ -25,7 +25,7 @@ export const podCastSsml = (content: PodCastOpeningSsmlProps, footer: string) =>
  * PodCastを想定したオープニングSSMLを生成する
  * @param props 
  */
-export const podCastOpeningSsml = (props: PodCastOpeningSsmlProps) => {
+export const podCastOpeningSsml = (props: PodCastContent) => {
   const headerInnerSSML = `
     ${props.channel ? `<emphasis level="strong">${props.channel.title}</emphasis><break time="1s" />` : null}
     ${props.channel ? `${props.channel.description}<break time="3s" />` : null}

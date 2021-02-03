@@ -5,14 +5,17 @@ import { isHtml, htmlToMd } from './mdUtilities'
  * MDをSSMLに変換する
  * HTMLの場合も自動的に判定しSSMLに変換する
  **/
-export const mdToSsml = (md: string) => {
-  let ssml: string = ''
-  if(isHtml(md)) {
-    ssml = render(htmlToMd(md))
-  } else {
-    ssml = render(md);
+export const mdToSsml = (md: string | null): string|null => {
+  if (md) {
+    let ssml: string = ''
+    if(isHtml(md)) {
+      ssml = render(htmlToMd(md))
+    } else {
+      ssml = render(md);
+    }
+    return ssml
   }
-  return ssml
+  return null
 }
 
 /**
