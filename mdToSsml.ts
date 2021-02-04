@@ -41,7 +41,7 @@ const renderer: Renderer = {
     /**
      * audio, break, emphasis, lang, lookup, mark, phoneme, prosody, say-as, sub, token, voice, w.
      */
-    return `<emphasis level="strong">${text}</emphasis>`
+    return `<break time="2s"/><emphasis level="strong">${text}</emphasis><break time="0.5s"/>`
   },
   code: (code: string, language: string | undefined, isEscaped: boolean) => {
     // verbatim: 文字ごとにスペルアウト

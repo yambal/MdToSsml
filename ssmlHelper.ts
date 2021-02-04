@@ -14,10 +14,10 @@ export type PodCastContent = {
   publishDate: Date
 }
 
-export const podCastSsml = (content: PodCastContent, footer: string) => {
+export const podCastSsml = (content: PodCastContent, footer: string | null) => {
   const headerSsml = podCastOpeningSsml(content)
   const bodySsml = mdToSsml(content.descMdOrHtmlOrText)
-  const footerSsml = `<emphasis level="strong">${footer}</emphasis>`
+  const footerSsml = footer ? `<emphasis level="strong">${footer}</emphasis>` : ''
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
 }
 

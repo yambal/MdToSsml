@@ -33,6 +33,11 @@ export const dateFormatForRead = (date: Date):string => {
   return `${p.year}年${p.month}月${p.day}日${p.weekday} ${p.dayPeriod}${p.hour}時${p.minute}分`
 }
 
+export const dateFormatForReadSort = (date: Date):string => {
+  const p = getDateTimeFormatParts(date)
+  return `${p.month}月${p.day}日${p.weekday}`
+}
+
 /**
  * 日時パーツを返す(日本語)
  **/
