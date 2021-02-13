@@ -8,6 +8,7 @@ export type PodCastContent = {
   channel?: {
     title: string,
     description: string
+    endingMd: string | null
   }
   title: string
   descMdOrHtmlOrText: string
@@ -17,7 +18,8 @@ export type PodCastContent = {
 export const podCastSsml = (content: PodCastContent, footer: string | null) => {
   const headerSsml = podCastOpeningSsml(content)
   const bodySsml = mdToSsml(content.descMdOrHtmlOrText)
-  const footerSsml = footer ? `<emphasis level="strong">${footer}</emphasis>` : ''
+  const footerSsml = podCastEndingSsml(content)
+  
   return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
 }
 
@@ -25,7 +27,7 @@ export const podCastSsml = (content: PodCastContent, footer: string | null) => {
  * PodCastを想定したオープニングSSMLを生成する
  * @param props 
  */
-export const podCastOpeningSsml = (props: PodCastContent) => {
+const podCastOpeningSsml = (props: PodCastContent) => {
   const headerInnerSSML = `
     ${props.channel ? `<emphasis level="strong">${props.channel.title}</emphasis><break time="1s" />` : null}
     ${props.channel ? `${props.channel.description}<break time="3s" />` : null}
@@ -42,6 +44,25 @@ export const podCastOpeningSsml = (props: PodCastContent) => {
       soundLevel: -10
     }
   }) + '<break time="3s"/>'
+}
+
+const podCastEndingSsml = ({ channel }: PodCastContent):string => {
+  if (channel && channel.endingMd) {
+    const endingSsml = mdToSsml(channel.endingMd)
+    if(endingSsml){
+      return addBgm({
+        content: endingSsml,
+        audio: {
+          url: 'https://yambal.github.io/MdToSsml/bgm_02.mp3',
+          introSec: 7,
+          afterglowSec: 7,
+          fadeoutSec: 3,
+          soundLevel: -10
+        }
+      })
+    }
+  }
+  return ''
 }
 
 /**
