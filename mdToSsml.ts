@@ -1,5 +1,6 @@
 import marked, { Renderer, Slugger } from 'marked'
 import { isHtml, htmlToMd } from './mdUtilities'
+import * as functions from 'firebase-functions';
 
 /**
  * MDをSSMLに変換する
@@ -13,6 +14,7 @@ export const mdToSsml = (md: string | null): string|null => {
     } else {
       ssml = render(md);
     }
+    functions.logger.info('ssml',)
     return ssml
   }
   return null
@@ -51,7 +53,7 @@ const renderer: Renderer = {
     return `<p>${quote}</p>`
   },
   paragraph : (text: string) => {
-    return `<p>${text}</p>`
+    return `<p>${text}</p><break time="0.75s"/>`
   },
   hr: () => {
     return `<break time="3s"/>`
@@ -82,7 +84,7 @@ const renderer: Renderer = {
     return `<s class="em">${text}</s>`
   },
   br: () => {
-    return `<break time="2s"/>`
+    return ``
   },
   del: (text: string) => {
     return `<s class="del">${text}</s>`
