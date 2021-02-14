@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid'
 import { dateFormatForRead } from './mdUtilities'
-import { mdToSsml } from './mdToSsml'
+import { mdToSsml, mdToSsmlResult } from './mdToSsml'
 
 const mediaId = customAlphabet('abcdefghijklmnopqrstuvwxyzABCSEFGHIJKLMNOPQRSTUVWXYZ0123456789', 3) // Media のIDにハイフンは使えない
 
@@ -15,12 +15,19 @@ export type PodCastContent = {
   publishDate: Date
 }
 
-export const podCastSsml = (content: PodCastContent, footer: string | null) => {
+export const podCastSsml = (content: PodCastContent): mdToSsmlResult => {
   const headerSsml = podCastOpeningSsml(content)
-  const bodySsml = mdToSsml(content.descMdOrHtmlOrText)
+  const bodySsmlResult = mdToSsml(content.descMdOrHtmlOrText)
+  const bodySsml = bodySsmlResult ? bodySsmlResult.ssml : ''
   const footerSsml = podCastEndingSsml(content)
   
-  return `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
+  const ssml = `<speak>${headerSsml}${bodySsml}${footerSsml}</speak>`
+  return {
+    ssml,
+    info: {
+      links: bodySsmlResult ? bodySsmlResult.info.links : []
+    }
+  }
 }
 
 /**
@@ -48,7 +55,8 @@ const podCastOpeningSsml = (props: PodCastContent) => {
 
 const podCastEndingSsml = ({ channel }: PodCastContent):string => {
   if (channel && channel.endingMd) {
-    const endingSsml = mdToSsml(channel.endingMd)
+    const endingSsmlResult = mdToSsml(channel.endingMd)
+    const endingSsml = endingSsmlResult?.ssml
     if(endingSsml){
       return addBgm({
         content: endingSsml,
