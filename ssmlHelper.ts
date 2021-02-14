@@ -56,14 +56,14 @@ const podCastOpeningSsml = (props: PodCastContent) => {
 const podCastEndingSsml = ({ channel }: PodCastContent):string => {
   if (channel && channel.endingMd) {
     const endingSsmlResult = mdToSsml(channel.endingMd)
-    const endingSsml = endingSsmlResult?.ssml
+    const endingSsml = endingSsmlResult ? endingSsmlResult.ssml : ''
     if(endingSsml){
       return addBgm({
         content: endingSsml,
         audio: {
           url: 'https://yambal.github.io/MdToSsml/bgm_02.mp3',
-          introSec: 7,
-          afterglowSec: 7,
+          introSec: 3,
+          afterglowSec: 4,
           fadeoutSec: 3,
           soundLevel: -10
         }

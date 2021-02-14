@@ -119,7 +119,6 @@ const Core = () => {
   const render = (md: string): mdToSsmlResult => {
     marked.use({ renderer })
     const ssml = marked(md)
-    console.log('links', links)
     return {
       ssml,
       info: {
