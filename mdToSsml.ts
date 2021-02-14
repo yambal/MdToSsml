@@ -171,6 +171,3 @@ const Core = () => {
  * See : https://marked.js.org/using_pro#renderer
  * Ssml : https://cloud.google.com/text-to-speech/docs/ssml?hl=ja
  */
-
-
-"<div class=\"header-2\">売上債権回転率で経営の効率性がわかる</div><div class=\"header-3\">業種別の売上債権回転率</div><a href=\"https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00553010&tstat=000001019842&cycle=7&tclass1=000001142846&tclass2=000001142847&tclass3val=0\" title=\"null\">URLリンク 1</a><div class=\"header-2\">売上債権回転率が低いときの対策方法</div><div class=\"header-3\">1. 支払期限を短くする</div><div class=\"header-3\">2. 入金の早い現金などの決済に限定する</div><div class=\"header-2\">売上債権回転率と売上債権回転期間の違い</div>"
