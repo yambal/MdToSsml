@@ -24,6 +24,15 @@ export const htmlToMd = (html: string): string => {
   return turndownService.turndown(html)
 }
 
+export const isUrl = (str?: string | null): boolean => {
+  if(str){
+    var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+    var regex = new RegExp(expression)
+    return str.match(regex) ? true : false
+  }
+  return false
+}
+
 // Date =====================================================
 /**
  * 読み上げ可能な日時に変換する(日本語)

@@ -25,7 +25,7 @@ export const podCastSsml = (content: PodCastContent): mdToSsmlResult => {
   return {
     ssml,
     info: {
-      links: bodySsmlResult ? bodySsmlResult.info.links : []
+      thumbHtml: bodySsmlResult ? bodySsmlResult.info.thumbHtml: []
     }
   }
 }
